@@ -133,21 +133,45 @@
         statusEl.textContent = `Talált válaszok: ${data.length}`;
 
         for (const item of data) {
-          const card = document.createElement("div");
+          const card = document.createElement("article");
           card.className = "answer-card";
-
-          const t = document.createElement("div");
-          t.className = "answer-time";
-          t.textContent = new Date(item.timestamp).toLocaleString();
-          card.appendChild(t);
-
-          const p = document.createElement("div");
-          p.className = "answer-text";
-          p.textContent = item.answer;
-          card.appendChild(p);
-
-          answersEl.appendChild(card);
+        
+          // --- ÚJ: eszköz + csoport cím sor ---
+          const metaDiv = document.createElement("div");
+          metaDiv.className = "answer-meta";
+        
+          let title = item.eszkoz || "Ismeretlen eszköz";
+          if (item.csoport && item.csoport !== "NONE") {
+            title += " - " + item.csoport + " csoport";
+          }
+          metaDiv.textContent = title;
+          card.appendChild(metaDiv);
+        
+          // Idő + batch info
+          const headerRow = document.createElement("div");
+          headerRow.className = "answer-header-row";
+        
+          const timeSpan = document.createElement("span");
+          timeSpan.className = "answer-time";
+          const t = new Date(item.timestamp);
+          timeSpan.textContent = formatTime(t);
+        
+          const batchSpan = document.createElement("span");
+          batchSpan.className = "answer-batch";
+          batchSpan.textContent = `batch ${item.batchId}`;
+        
+          headerRow.appendChild(timeSpan);
+          headerRow.appendChild(batchSpan);
+          card.appendChild(headerRow);
+        
+          const textDiv = document.createElement("div");
+          textDiv.className = "answer-text";
+          textDiv.textContent = item.answer;
+        
+          card.appendChild(textDiv);
+          answersContainer.appendChild(card);
         }
+
       } catch (err) {
         console.error(err);
         statusEl.textContent = "Hiba a válaszok lekérése közben.";
@@ -158,3 +182,4 @@
   </script>
 </body>
 </html>
+
