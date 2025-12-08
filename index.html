@@ -154,7 +154,7 @@
           const timeSpan = document.createElement("span");
           timeSpan.className = "answer-time";
           const t = new Date(item.timestamp);
-          timeSpan.textContent = formatTime(t);
+          timeSpan.textContent = t.toLocaleTimeString("hu-HU");
         
           const batchSpan = document.createElement("span");
           batchSpan.className = "answer-batch";
@@ -182,6 +182,7 @@
   </script>
 </body>
 </html>
+
 
 
 
